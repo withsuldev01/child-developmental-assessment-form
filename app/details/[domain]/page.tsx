@@ -20,11 +20,11 @@ import {
 } from "@/lib/consultation-form";
 
 const SCREENING_STEP = "/screening";
-const REVIEW_STEP = "/review"; // 검토/요약 (추후 구현)
+const ADDITIONAL_STEP = "/additional"; // 05 추가 입력 (04 다음 단계)
 
-// 전체 6단계 중 04 상세는 4단계 (영역 수와 무관하게 고정).
+// 전체 7단계 중 04 상세는 4단계 (영역 수와 무관하게 고정).
 const MAIN_STEP = 4;
-const MAIN_TOTAL = 6;
+const MAIN_TOTAL = 7;
 
 // 영역 간 이동 시 스크롤 위치 복원용(클라이언트 모듈 수명 동안 유지).
 const scrollPositions = new Map<string, number>();
@@ -45,7 +45,7 @@ export default function DetailPage() {
   // 하이드레이션 타이밍에 잘못 리다이렉트되는 것을 막는다.
   React.useEffect(() => {
     const domains = getSelectedDomains(loadForm().section03);
-    if (domains.length === 0) router.replace(REVIEW_STEP);
+    if (domains.length === 0) router.replace(ADDITIONAL_STEP);
     else if (!domains.includes(domain)) router.replace(`/details/${domains[0]}`);
   }, [domain, router]);
 
@@ -111,7 +111,7 @@ export default function DetailPage() {
       return;
     }
     scrollPositions.set(domain, window.scrollY);
-    if (isLast) router.push(REVIEW_STEP);
+    if (isLast) router.push(ADDITIONAL_STEP);
     else router.push(`/details/${domains[index + 1]}`);
   }
 
@@ -203,7 +203,7 @@ export default function DetailPage() {
             aria-disabled={!isComplete}
             className="h-14 w-full gap-2 rounded-2xl text-[1.05rem] font-semibold shadow-lg shadow-orange-900/15 hover:bg-orange-800"
           >
-            {isLast ? "검토하기" : "다음 영역"}
+            {isLast ? "다음" : "다음 영역"}
             <ArrowRight className="size-5" strokeWidth={2.2} />
           </Button>
         </div>

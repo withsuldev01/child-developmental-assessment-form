@@ -157,12 +157,12 @@ export default function InfoPage() {
             <ArrowLeft className="size-5" />
           </button>
           <div className="flex-1">
-            <p className="text-xs font-medium text-orange-700">1 / 6 단계</p>
+            <p className="text-xs font-medium text-orange-700">1 / 7 단계</p>
             <h1 className="text-base font-bold text-zinc-900">기본 정보</h1>
           </div>
         </div>
         {/* 진행률 */}
-        <StepProgress step={1} total={6} className="h-1 rounded-none bg-orange-100" />
+        <StepProgress step={1} total={7} className="h-1 rounded-none bg-orange-100" />
       </header>
 
       {/* 본문 */}

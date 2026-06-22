@@ -31,6 +31,11 @@ export interface ConsultationForm {
   section02: Record<string, YesNo>; // 02 기본 확인 6문항
   section03: Record<string, YesNo>; // 03 빠른 선별 9문항 (분기 트리거)
   section04: Partial<Record<DomainKey, Record<string, YesNo>>>; // 04 상세
+  // 05 추가 입력 (모두 선택 입력)
+  additional: {
+    note: string; // 자유 서술 메모 (추가로 알리고 싶은 점·특이사항)
+    hopes: string; // 상담 희망사항 (이번 상담에서 도움받고 싶은 점)
+  };
   meta: {
     startedAt: string | null; // 작성 시작 시각 ISO
     completedAt: string | null; // 작성 완료 시각 ISO
@@ -53,6 +58,7 @@ export function createEmptyForm(): ConsultationForm {
     section02: {},
     section03: {},
     section04: {},
+    additional: { note: "", hopes: "" },
     meta: { startedAt: null, completedAt: null, version: FORM_VERSION },
   };
 }
@@ -73,6 +79,7 @@ export function loadForm(): ConsultationForm {
       section02: { ...parsed.section02 },
       section03: { ...parsed.section03 },
       section04: { ...parsed.section04 },
+      additional: { ...empty.additional, ...parsed.additional },
       meta: { ...empty.meta, ...parsed.meta },
     };
   } catch {
