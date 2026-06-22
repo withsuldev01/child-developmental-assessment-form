@@ -19,12 +19,12 @@ import {
 import { ConcernCard } from "@/components/concern-card";
 import { StepProgress } from "@/components/step-progress";
 import { Button } from "@/components/ui/button";
-import { SECTION_03_QUESTIONS } from "@/lib/questions";
-import { useConsultationForm } from "@/lib/consultation-form";
+import { SECTION_03_QUESTIONS, getSelectedDomains } from "@/lib/questions";
+import { useConsultationForm, type DomainKey } from "@/lib/consultation-form";
 
 const PREV_STEP = "/basic-check";
-// 04 상세 체크(03 선택 영역만 조건부 노출). 추후 구현.
-const NEXT_STEP = "/details";
+// 04 상세 영역이 하나도 없을 때(s8·s9만 선택) 건너뛸 검토 화면. 추후 구현.
+const REVIEW_STEP = "/review";
 
 // 항목 id → 아이콘. 라벨·문항은 questions.ts(원본)에서 가져온다.
 const ICONS: Record<string, LucideIcon> = {
@@ -60,15 +60,22 @@ export default function ScreeningPage() {
 
   function handleNext() {
     if (!canProceed) return;
-    // 미선택 항목을 "아니요"로 확정해 9항목 응답을 완성한다(PDF·검토용).
+    const domains = getSelectedDomains(answers);
     update((prev) => {
+      // 미선택 항목을 "아니요"로 확정해 9항목 응답을 완성한다(PDF·검토용).
       const filled = { ...prev.section03 };
       for (const q of SECTION_03_QUESTIONS) {
         filled[q.id] = filled[q.id] === "yes" ? "yes" : "no";
       }
-      return { ...prev, section03: filled };
+      // 선택 해제된 영역의 04 상세 응답은 제거해 검토·PDF와 일관성을 유지한다.
+      const section04 = { ...prev.section04 };
+      for (const key of Object.keys(section04) as DomainKey[]) {
+        if (!domains.includes(key)) delete section04[key];
+      }
+      return { ...prev, section03: filled, section04 };
     });
-    router.push(NEXT_STEP);
+    // 선택된 첫 영역으로 진입. 매핑 영역이 없으면(s8·s9만) 검토로 직행(FR-5).
+    router.push(domains.length > 0 ? `/details/${domains[0]}` : REVIEW_STEP);
   }
 
   return (

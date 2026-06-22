@@ -123,6 +123,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* 모바일 더블탭 확대로 인한 300ms 탭 지연 제거(핀치 줌은 유지) */
+    touch-action: manipulation;
   }
   html {
     @apply font-sans;
