@@ -131,6 +131,14 @@
   }
 }
 
+/* 인쇄(PDF 저장): A4 평가지 여백 */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+}
+
 /* 접근성: 모션 최소화 설정을 존중 */
 @media (prefers-reduced-motion: reduce) {
   *,
