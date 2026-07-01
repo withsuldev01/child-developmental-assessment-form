@@ -232,11 +232,12 @@ export default function CompletePage() {
       </main>
 
       <div
-        ref={imageSourceRef}
         aria-hidden="true"
-        className="pointer-events-none fixed top-0 left-[-10000px] w-[800px] bg-white p-6 print:hidden"
+        className="pointer-events-none fixed top-0 left-0 h-0 w-0 overflow-hidden print:hidden"
       >
-        <PrintableForm form={form} />
+        <div ref={imageSourceRef} className="w-[800px] bg-white p-6">
+          <PrintableForm form={form} />
+        </div>
       </div>
 
       {previewOpen && (

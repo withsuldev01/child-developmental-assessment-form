@@ -7,10 +7,25 @@ import type { ConsultationForm } from "@/lib/consultation-form";
 export async function createReportImageBlob(node: HTMLElement): Promise<Blob> {
   await document.fonts?.ready;
 
+  const rect = node.getBoundingClientRect();
+  const width = Math.ceil(node.scrollWidth || rect.width);
+  const height = Math.ceil(node.scrollHeight || rect.height);
+
+  if (width <= 0 || height <= 0) {
+    throw new Error("이미지 생성 대상의 크기를 계산할 수 없습니다.");
+  }
+
   const blob = await toBlob(node, {
+    width,
+    height,
     backgroundColor: "#ffffff",
     cacheBust: true,
-    pixelRatio: 2,
+    pixelRatio: 1,
+    style: {
+      width: `${width}px`,
+      height: `${height}px`,
+      transform: "none",
+    },
   });
 
   if (!blob) {
