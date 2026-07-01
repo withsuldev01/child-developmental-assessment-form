@@ -20,11 +20,11 @@ import {
 } from "@/lib/consultation-form";
 
 const SCREENING_STEP = "/screening";
-const ADDITIONAL_STEP = "/additional"; // 05 추가 입력 (04 다음 단계)
+const LIFESTYLE_STEP = "/lifestyle"; // 05 생활습관 확인 (04 다음 단계)
 
-// 전체 7단계 중 04 상세는 4단계 (영역 수와 무관하게 고정).
+// 전체 8단계 중 04 상세는 4단계 (영역 수와 무관하게 고정).
 const MAIN_STEP = 4;
-const MAIN_TOTAL = 7;
+const MAIN_TOTAL = 8;
 
 // 영역 간 이동 시 스크롤 위치 복원용(클라이언트 모듈 수명 동안 유지).
 const scrollPositions = new Map<string, number>();
@@ -45,7 +45,7 @@ export default function DetailPage() {
   // 하이드레이션 타이밍에 잘못 리다이렉트되는 것을 막는다.
   React.useEffect(() => {
     const domains = getSelectedDomains(loadForm().section03);
-    if (domains.length === 0) router.replace(ADDITIONAL_STEP);
+    if (domains.length === 0) router.replace(LIFESTYLE_STEP);
     else if (!domains.includes(domain)) router.replace(`/details/${domains[0]}`);
   }, [domain, router]);
 
@@ -60,7 +60,7 @@ export default function DetailPage() {
   const index = domains.indexOf(domain);
   const answers = form.section04[domain] ?? {};
 
-  // 단일 진행 바: 03 완료(3/6)에서 시작해 영역을 하나씩 지날 때마다 4/6까지 차오른다.
+  // 단일 진행 바: 03 완료(3/8)에서 시작해 영역을 하나씩 지날 때마다 4/8까지 차오른다.
   const barTotal = domains.length || 1;
   const barTarget = Math.round(
     ((MAIN_STEP - 1 + (index + 1) / barTotal) / MAIN_TOTAL) * 100,
@@ -111,7 +111,7 @@ export default function DetailPage() {
       return;
     }
     scrollPositions.set(domain, window.scrollY);
-    if (isLast) router.push(ADDITIONAL_STEP);
+    if (isLast) router.push(LIFESTYLE_STEP);
     else router.push(`/details/${domains[index + 1]}`);
   }
 

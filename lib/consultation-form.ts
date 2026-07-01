@@ -3,10 +3,17 @@
 import * as React from "react";
 
 // PRD §8 데이터 모델. 서버 영속 저장은 1차 범위 외 — sessionStorage에만 보관하고
-// 작성 완료/초기화 시 비운다(FR-10). 키오스크 기기에 개인정보가 잔존하지 않도록 한다.
+// 작성 완료/초기화 시 비운다(FR-12). 키오스크 기기에 개인정보가 잔존하지 않도록 한다.
 
 export type Gender = "male" | "female";
 export type YesNo = "yes" | "no";
+export type MediaTimeOption =
+  | "under30m"
+  | "over30m_under1h"
+  | "over1h_under2h"
+  | "over2h_under3h"
+  | "over3h"
+  | "other";
 
 /** 03 선별 문항 ↔ 04 상세 섹션 매핑에 쓰이는 영역 키 (PRD FR-5) */
 export type DomainKey =
@@ -31,7 +38,11 @@ export interface ConsultationForm {
   section02: Record<string, YesNo>; // 02 기본 확인 6문항
   section03: Record<string, YesNo>; // 03 빠른 선별 9문항 (분기 트리거)
   section04: Partial<Record<DomainKey, Record<string, YesNo>>>; // 04 상세
-  // 05 추가 입력 (모두 선택 입력)
+  section05_lifestyle: {
+    mediaTime: MediaTimeOption | null;
+    mediaTimeOtherText: string;
+  };
+  // 06 추가 입력 (모두 선택 입력)
   additional: {
     note: string; // 자유 서술 메모 (추가로 알리고 싶은 점·특이사항)
     hopes: string; // 상담 희망사항 (이번 상담에서 도움받고 싶은 점)
@@ -43,7 +54,7 @@ export interface ConsultationForm {
   };
 }
 
-export const FORM_VERSION = 1;
+export const FORM_VERSION = 2;
 const STORAGE_KEY = "consultation-form";
 
 export function createEmptyForm(): ConsultationForm {
@@ -58,6 +69,7 @@ export function createEmptyForm(): ConsultationForm {
     section02: {},
     section03: {},
     section04: {},
+    section05_lifestyle: { mediaTime: null, mediaTimeOtherText: "" },
     additional: { note: "", hopes: "" },
     meta: { startedAt: null, completedAt: null, version: FORM_VERSION },
   };
@@ -79,6 +91,10 @@ export function loadForm(): ConsultationForm {
       section02: { ...parsed.section02 },
       section03: { ...parsed.section03 },
       section04: { ...parsed.section04 },
+      section05_lifestyle: {
+        ...empty.section05_lifestyle,
+        ...parsed.section05_lifestyle,
+      },
       additional: { ...empty.additional, ...parsed.additional },
       meta: { ...empty.meta, ...parsed.meta },
     };

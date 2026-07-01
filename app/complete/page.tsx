@@ -49,11 +49,11 @@ export default function CompletePage() {
               <ArrowLeft className="size-5" />
             </button>
             <div className="flex-1">
-              <p className="text-xs font-medium text-orange-700">7 / 7 단계</p>
+              <p className="text-xs font-medium text-orange-700">8 / 8 단계</p>
               <h1 className="text-base font-bold text-zinc-900">작성 완료</h1>
             </div>
           </div>
-          <StepProgress step={7} total={7} className="h-1 rounded-none bg-orange-100" />
+          <StepProgress step={8} total={8} className="h-1 rounded-none bg-orange-100" />
         </header>
 
         {/* 본문 */}

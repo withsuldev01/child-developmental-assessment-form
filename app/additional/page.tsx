@@ -7,21 +7,16 @@ import { StepProgress } from "@/components/step-progress";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { getSelectedDomains } from "@/lib/questions";
 import { useConsultationForm } from "@/lib/consultation-form";
 
-const NEXT_STEP = "/review"; // 06 검토/요약 (추후 구현)
+const PREV_STEP = "/lifestyle";
+const NEXT_STEP = "/review";
 const MAX_LEN = 500;
 
 export default function AdditionalPage() {
   const router = useRouter();
   const { form, update } = useConsultationForm();
   const { note, hopes } = form.additional;
-
-  // 이전 단계: 선택한 영역이 있으면 마지막 상세 영역, 없으면 03 선별로.
-  const domains = getSelectedDomains(form.section03);
-  const prevStep =
-    domains.length > 0 ? `/details/${domains[domains.length - 1]}` : "/screening";
 
   function setField(field: "note" | "hopes", value: string) {
     update((prev) => ({
@@ -37,18 +32,18 @@ export default function AdditionalPage() {
         <div className="mx-auto flex w-full max-w-md items-center gap-2 px-4 py-3">
           <button
             type="button"
-            onClick={() => router.push(prevStep)}
+            onClick={() => router.push(PREV_STEP)}
             aria-label="뒤로 가기"
             className="flex size-11 shrink-0 items-center justify-center rounded-full text-zinc-600 transition-colors hover:bg-orange-100/70 focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none active:bg-orange-100"
           >
             <ArrowLeft className="size-5" />
           </button>
           <div className="flex-1">
-            <p className="text-xs font-medium text-orange-700">5 / 7 단계</p>
+            <p className="text-xs font-medium text-orange-700">6 / 8 단계</p>
             <h1 className="text-base font-bold text-zinc-900">추가 입력</h1>
           </div>
         </div>
-        <StepProgress step={5} total={7} className="h-1 rounded-none bg-orange-100" />
+        <StepProgress step={6} total={8} className="h-1 rounded-none bg-orange-100" />
       </header>
 
       {/* 본문 */}

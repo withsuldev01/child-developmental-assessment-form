@@ -6,6 +6,7 @@ import {
   SECTION_02_QUESTIONS,
   SECTION_03_QUESTIONS,
   SECTION_04_QUESTIONS,
+  formatMediaTime,
   getSelectedDomains,
 } from "@/lib/questions";
 import {
@@ -127,8 +128,24 @@ export function PrintableForm({ form }: { form: ConsultationForm }) {
         </div>
       ))}
 
-      {/* 추가 기록 (05 추가 입력) */}
-      <SectionTitle>추가 기록</SectionTitle>
+      {/* 05. 생활습관 확인 */}
+      <SectionTitle>05. 생활습관 확인</SectionTitle>
+      <table className="w-full border-collapse">
+        <tbody>
+          <tr className="break-inside-avoid">
+            <ThCell>하루 평균 미디어 시청 시간</ThCell>
+            <TdCell>
+              {formatMediaTime(
+                form.section05_lifestyle.mediaTime,
+                form.section05_lifestyle.mediaTimeOtherText,
+              )}
+            </TdCell>
+          </tr>
+        </tbody>
+      </table>
+
+      {/* 06. 추가 입력 */}
+      <SectionTitle>06. 추가 입력</SectionTitle>
       <div className="space-y-2 border border-zinc-300 p-2.5">
         <NoteBlock label="추가로 알리고 싶은 점" value={form.additional.note} />
         <NoteBlock label="상담 희망사항" value={form.additional.hopes} />

@@ -23,8 +23,8 @@ import { SECTION_03_QUESTIONS, getSelectedDomains } from "@/lib/questions";
 import { useConsultationForm, type DomainKey } from "@/lib/consultation-form";
 
 const PREV_STEP = "/basic-check";
-// 04 상세 영역이 하나도 없을 때(s8·s9만 선택) 04를 건너뛰고 갈 다음 단계(05 추가 입력).
-const ADDITIONAL_STEP = "/additional";
+// 04 상세 영역이 하나도 없을 때(s8·s9만 선택) 04를 건너뛰고 갈 다음 단계(05 생활습관 확인).
+const LIFESTYLE_STEP = "/lifestyle";
 
 // 항목 id → 아이콘. 라벨·문항은 questions.ts(원본)에서 가져온다.
 const ICONS: Record<string, LucideIcon> = {
@@ -75,7 +75,7 @@ export default function ScreeningPage() {
       return { ...prev, section03: filled, section04 };
     });
     // 선택된 첫 영역으로 진입. 매핑 영역이 없으면(s8·s9만) 04를 건너뛴다(FR-5).
-    router.push(domains.length > 0 ? `/details/${domains[0]}` : ADDITIONAL_STEP);
+    router.push(domains.length > 0 ? `/details/${domains[0]}` : LIFESTYLE_STEP);
   }
 
   return (
@@ -92,13 +92,13 @@ export default function ScreeningPage() {
             <ArrowLeft className="size-5" />
           </button>
           <div className="flex-1">
-            <p className="text-xs font-medium text-orange-700">3 / 7 단계</p>
+            <p className="text-xs font-medium text-orange-700">3 / 8 단계</p>
             <h1 className="text-base font-bold text-zinc-900">
               주호소 영역 빠른 선별
             </h1>
           </div>
         </div>
-        <StepProgress step={3} total={7} className="h-1 rounded-none bg-orange-100" />
+        <StepProgress step={3} total={8} className="h-1 rounded-none bg-orange-100" />
       </header>
 
       {/* 본문 */}

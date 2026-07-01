@@ -43,11 +43,11 @@ export default function BasicCheckPage() {
             <ArrowLeft className="size-5" />
           </button>
           <div className="flex-1">
-            <p className="text-xs font-medium text-orange-700">2 / 7 단계</p>
+            <p className="text-xs font-medium text-orange-700">2 / 8 단계</p>
             <h1 className="text-base font-bold text-zinc-900">초기 상담 기본 확인</h1>
           </div>
         </div>
-        <StepProgress step={2} total={7} className="h-1 rounded-none bg-orange-100" />
+        <StepProgress step={2} total={8} className="h-1 rounded-none bg-orange-100" />
       </header>
 
       {/* 본문 */}

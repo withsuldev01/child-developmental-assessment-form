@@ -1,14 +1,44 @@
-// 설문 문항 정의. 원본 `docs/아동 발달 초기 체크리스트.md`와 1:1로 대응한다 (PRD §8).
+// 설문 문항 정의. 02~04는 원본 `docs/아동 발달 초기 체크리스트.md`와 1:1로 대응한다.
 // 문항 텍스트는 원본을 그대로 사용하며, id는 응답 저장·PDF·검토 화면에서 안정적으로
-// 참조하기 위한 키다(원본 순서 기준, 변경 금지).
+// 참조하기 위한 키다(원본 순서 기준, 변경 금지). 05는 제품 추가 문항이다.
 
-import type { DomainKey, YesNo } from "@/lib/consultation-form";
+import type {
+  DomainKey,
+  MediaTimeOption,
+  YesNo,
+} from "@/lib/consultation-form";
 
 export interface Question {
   /** section02/03/04 응답 Record의 키. 원본 순서 고정 — 절대 재배치/재사용 금지. */
   id: string;
   /** 원본 문항 텍스트 그대로. */
   text: string;
+}
+
+export const MEDIA_TIME_QUESTION =
+  "하루 평균 미디어 시청 시간";
+
+export const MEDIA_TIME_DESCRIPTION =
+  "아동이 하루에 TV, 스마트폰, 태블릿, 유튜브, 게임, 영상통화 등 영상/디지털 미디어를 이용하거나 시청하는 평균 시간을 선택해주세요.";
+
+export const MEDIA_TIME_OPTIONS: {
+  value: MediaTimeOption;
+  label: string;
+}[] = [
+  { value: "under30m", label: "30분 이하" },
+  { value: "over30m_under1h", label: "30분 초과 ~ 1시간 이하" },
+  { value: "over1h_under2h", label: "1시간 초과 ~ 2시간 이하" },
+  { value: "over2h_under3h", label: "2시간 초과 ~ 3시간 이하" },
+  { value: "over3h", label: "3시간 초과" },
+  { value: "other", label: "기타" },
+];
+
+export function formatMediaTime(
+  value: MediaTimeOption | null,
+  otherText: string,
+): string {
+  if (value === "other") return otherText.trim() || "기타";
+  return MEDIA_TIME_OPTIONS.find((option) => option.value === value)?.label ?? "-";
 }
 
 /** 02. 초기 상담 기본 확인 — 예/아니요 6문항 (항상 표시, 분기 영향 없음 · FR-3) */

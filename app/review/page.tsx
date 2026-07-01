@@ -11,6 +11,7 @@ import {
   SECTION_02_QUESTIONS,
   SECTION_03_QUESTIONS,
   SECTION_04_QUESTIONS,
+  formatMediaTime,
   getSelectedDomains,
 } from "@/lib/questions";
 import {
@@ -20,7 +21,7 @@ import {
 } from "@/lib/consultation-form";
 
 const PREV_STEP = "/additional";
-const NEXT_STEP = "/complete"; // 07 완료 (PDF·공유) — 추후 구현
+const NEXT_STEP = "/complete";
 
 function formatBirth(iso: string | null): string {
   if (!iso) return "-";
@@ -52,11 +53,11 @@ export default function ReviewPage() {
             <ArrowLeft className="size-5" />
           </button>
           <div className="flex-1">
-            <p className="text-xs font-medium text-orange-700">6 / 7 단계</p>
+            <p className="text-xs font-medium text-orange-700">7 / 8 단계</p>
             <h1 className="text-base font-bold text-zinc-900">작성 내용 검토</h1>
           </div>
         </div>
-        <StepProgress step={6} total={7} className="h-1 rounded-none bg-orange-100" />
+        <StepProgress step={7} total={8} className="h-1 rounded-none bg-orange-100" />
       </header>
 
       {/* 본문 */}
@@ -152,7 +153,20 @@ export default function ReviewPage() {
           </Section>
         )}
 
-        {/* 05. 추가 입력 */}
+        {/* 05. 생활습관 확인 */}
+        <Section title="생활습관 확인" onEdit={() => router.push("/lifestyle")}>
+          <dl className="space-y-2.5">
+            <Row
+              label="미디어 시청 시간"
+              value={formatMediaTime(
+                form.section05_lifestyle.mediaTime,
+                form.section05_lifestyle.mediaTimeOtherText,
+              )}
+            />
+          </dl>
+        </Section>
+
+        {/* 06. 추가 입력 */}
         <Section title="추가 입력" onEdit={() => router.push("/additional")}>
           <dl className="space-y-3">
             <NoteRow label="추가로 알리고 싶은 점" value={form.additional.note} />
